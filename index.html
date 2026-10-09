@@ -102,7 +102,9 @@
             var deps = [];
             results.forEach(function (groups) {
               (groups || []).forEach(function (g) {
-                var short = g.pattern && g.pattern.shortName;
+                var patternId = g.pattern && g.pattern.id || ""; 
+                var short = patternId.split(":")[1];
+                
                 if (LINES.indexOf(short) === -1) return; // trams seulement
                 (g.times || []).forEach(function (t) {
                   var depSec = t.serviceDay + (t.realtimeDeparture || t.scheduledDeparture);
