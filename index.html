@@ -24,7 +24,7 @@
       padding: clamp(14px, 3vw, 40px);
       display: flex;
       flex-direction: column;
-      gap: clamp(26px, 4vh, 40px);
+      gap: clamp(24px, 3vh, 34px);
     }
     header {
       display: flex;
@@ -39,6 +39,9 @@
     #clock { font-size: clamp(1.2rem, 3vw, 1.7rem); font-variant-numeric: tabular-nums; }
     #status { font-size: .8rem; margin-top: 4px; }
     .ligne { width: 100%; max-width: 1100px; margin-inline: auto; }
+    /* Espace explicite sous la séparation pour dégager la pastille B. */
+    .ligne--a { padding-bottom: 22px; }
+    .ligne--b { margin-top: 0; }
     .ligne__entete {
       display: flex;
       align-items: center;
@@ -55,13 +58,15 @@
     .ligne--b .pastille { background: var(--ligne-b); }
     .ligne__destinations {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 24px;
+      grid-template-columns: 28% 36% 36%;
+      gap: 0;
       width: 100%;
       font-size: clamp(1rem, 2vw, 1.25rem);
       font-weight: 600;
     }
     .ligne__destinations span { min-width: 0; }
+    .ligne__destinations span:first-child { grid-column: 2; }
+    .ligne__destinations span:last-child { grid-column: 3; }
     .tableau { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: clamp(.9rem, 1.8vw, 1.125rem); }
     .tableau th, .tableau td { padding: 14px 16px; text-align: left; }
     .tableau th:first-child, .tableau td:first-child { padding-left: 66px; }
@@ -77,12 +82,14 @@
     .vide { color: #858b93; font-size: .9em; font-weight: 400; }
     .ligne--a .temps .minutes { color: var(--ligne-a); }
     .ligne--b .temps .minutes { color: var(--ligne-b); }
-    .ligne__separateur { border: 0; border-top: 1px solid var(--separateur); margin-top: 6px; }
+    .ligne__separateur { border: 0; border-top: 1px solid var(--separateur); margin-top: 18px; }
     @media (max-width: 600px) {
-      body { padding: 14px 12px; gap: 28px; }
+      body { padding: 14px 12px; gap: 16px; }
+      .ligne--a { padding-bottom: 18px; }
+      .ligne--b { margin-top: 0; }
       .pastille { width: 40px; height: 40px; min-width: 40px; font-size: 22px; }
       .ligne__entete { gap: 12px; }
-      .ligne__destinations { gap: 0 12px; font-size: 1rem; }
+      .ligne__destinations { gap: 0; font-size: 1rem; grid-template-columns: 31% 34.5% 34.5%; }
       .tableau th, .tableau td { padding: 12px 6px; }
       .tableau th:first-child, .tableau td:first-child { padding-left: 4px; }
       .tableau thead th:first-child { width: 31%; }
@@ -94,7 +101,7 @@
 </head>
 <body>
   <header>
-    <h1>🚋 Prochains passages</h1>
+    <h1>Prochains passages</h1>
     <div class="infos">
       <div id="clock">--:--</div>
       <div id="status" role="status" aria-live="polite">Chargement des données TAG…</div>
@@ -222,11 +229,11 @@
 
       return '<section class="ligne ligne--' + layout.css + '" aria-label="Ligne ' + layout.line + '">' +
         '<div class="ligne__entete"><div class="pastille" aria-hidden="true">' + layout.line + '</div>' +
-        '<div class="ligne__destinations">' + layout.stops.map(function (s) {
-          return '<span>' + s + '</span>';
-        }).join("") + '</div></div>' +
-        '<table class="tableau"><thead><tr><th scope="col">Terminus</th>' +
-        layout.stops.map(function (s) { return '<th scope="col">' + s + '</th>'; }).join("") +
+        '<div class="ligne__destinations" role="presentation">' +
+          '<span>' + layout.stops[0] + '</span><span>' + layout.stops[1] + '</span>' +
+        '</div></div>' +
+        '<table class="tableau"><thead><tr><th scope="col"></th>' +
+        '<th scope="col"></th><th scope="col"></th>' +
         '</tr></thead><tbody>' + rows + '</tbody></table>' +
         '<hr class="ligne__separateur"></section>';
     }
