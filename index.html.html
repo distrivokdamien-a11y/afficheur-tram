@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Afficheur Tram — TAG Grenoble</title>
+    <style>
+      :root {
+        font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+        background: #0b0f1a;
+        color: #e8ecf3;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { min-height: 100vh; padding: 16px; }
+      header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 8px 12px; margin-bottom: 14px;
+        border-bottom: 2px solid #2a3350;
+      }
+      header h1 { font-size: 1.5rem; letter-spacing: 1px; }
+      #clock { font-size: 1.4rem; font-variant-numeric: tabular-nums; color: #9fb3d9; }
+      #status { font-size: 0.85rem; color: #9fb3d9; text-align: right; }
+      .stop {
+        background: #141b2d; border-radius: 14px; padding: 14px 16px;
+        margin-bottom: 14px; border-left: 6px solid #444;
+      }
+      .stop h2 { font-size: 1.3rem; margin-bottom: 10px; color: #cdd8ea; }
+      .deps { display: flex; flex-wrap: wrap; gap: 10px; }
+      .dep {
+        display: flex; align-items: center; gap: 12px;
+        background: #1c2540; border-radius: 12px; padding: 10px 16px;
+        min-width: 260px; flex: 1;
+      }
+      .line-badge {
+        width: 54px; height: 54px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; font-weight: bold; color: #fff; flex-shrink: 0;
+      }
+      .line-A { background: #d81e05; }
+      .line-B { background: #0072bc; }
+      .dep .dest { flex: 1; font-size: 1.05rem; }
+      .dep .eta { font-size: 2rem; font-weight: bold; font-variant-numeric: tabular-nums; }
+      .dep .eta small { font-size: 1rem; font-weight: normal; margin-left: 4px; }
+      .dep.approaching .eta { color: #ffd166; }
+      .realtime-tag { font-size: 0.7rem; color: #7fe08a; }
+      .theo-tag { font-size: 0.7rem; color: #8b97ad; }
+      .empty { color: #8b97ad; font-style: italic; padding: 6px 2px; }
+      @media (max-width: 600px) {
+        .dep { min-width: 100%; }
+        #clock { font-size: 1.1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>🚋 Prochains passages</h1>
+        <div id="status">Chargement…</div>
+      </div>
+      <div id="clock">--:--</div>
+    </header>
+
+    <main id="app"></main>
+
+    <script>
+      // Configuration : arrêts et quais à surveiller (codes TAG, réseau SEM)
+      // Palais de Justice – Gare : SEM:2076 / SEM:0802 / SEM:2077 (Tram B)
+      // Saint-Bruno : SEM:2030 / SEM:2031 (Tram A)
+      // Berriat – Le Magasin : SEM:0923 / SEM:0924 / SEM:2032 / SEM:2033 (Tram A)
+      var STOPS = [
+        { name: "Palais de Justice – Gare", codes: ["SEM:2076", "SEM:0802", "SEM:2077"] },
+        { name: "Saint-Bruno", codes: ["SEM:2030", "SEM:2031"] },
+        { name: "Berriat – Le Magasin", codes: ["SEM:0923", "SEM:0924", "SEM:2032", "SEM:2033"] }
+      ];
+      var LINES = ["A", "B"];        // lignes affichées (trams)
+      var NEXT_COUNT = 3;           // nombre de passages affichés par arrêt
+      var REFRESH_MS = 20000;       // rafraîchissement toutes les 20 s
+
+      function clockTick() {
+        var d = new Date();
+        document.getElementById("clock").textContent =
+          ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+      }
+
+      function fmtEta(depMs) {
+        var min = Math.round((depMs - Date.now()) / 60000);
+        if (min <= 0) return { txt: "À l'approche", cls: "approaching" };
+        return { txt: min + "<small>min</small>", cls: "" };
+      }
+
+      function fetchStop(code) {
+        // Le navigateur envoie automatiquement l'entête Origin requis par l'API M.
+        return fetch("https://data.mobilites-m.fr/api/routers/default/index/stops/" + code + "/stoptimes")
+          .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+      }
+
+      function collectDepartures(stop) {
+        var promises = stop.codes.map(fetchStop);
+        return Promise.all(promises.map(function (p) { return p.catch(function () { return []; }); }))
+          .then(function (results) {
+            var seen = {};
+            var deps = [];
+            results.forEach(function (groups) {
+              (groups || []).forEach(function (g) {
+              var patternId = g.pattern && g.pattern.id || "";
+              var short = patternId.split(":")[1];
+              
+              if (LINES.indexOf(short) === -1) return; // trams seulement
+                (g.times || []).forEach(function (t) {
+                  var depSec = t.serviceDay + (t.realtimeDeparture || t.scheduledDeparture);
+                  var depMs = depSec * 1000;
+                  if (depMs < Date.now() - 30000) return;
+                  var key = t.tripId;
+                  if (seen[key]) return; // dédoublonnage entre quais du même arrêt
+                  seen[key] = true;
+                  deps.push({
+                    line: short,
+                    dest: (g.pattern.headsign || g.pattern.desc || "").replace(/^SEM:|^.*— /, ""),
+                    ms: depMs,
+                    realtime: !!t.realtime
+                  });
+                });
+              });
+            });
+            deps.sort(function (a, b) { return a.ms - b.ms; });
+            return deps;
+          });
+      }
+
+      function render() {
+        var app = document.getElementById("app");
+        var okCount = 0;
+        Promise.all(STOPS.map(function (stop) {
+          return collectDepartures(stop).then(function (deps) {
+            if (deps.length) okCount++;
+            return { stop: stop, deps: deps };
+          });
+        })).then(function (blocks) {
+          app.innerHTML = blocks.map(function (b) {
+            var cards = b.deps.slice(0, NEXT_COUNT).map(function (d) {
+              var eta = fmtEta(d.ms);
+              var tag = d.realtime
+                ? '<span class="realtime-tag">● temps réel</span>'
+                : '<span class="theo-tag">○ horaire théorique</span>';
+              return '<div class="dep ' + eta.cls + '">' +
+                '<div class="line-badge line-' + d.line + '">' + d.line + '</div>' +
+                '<div class="dest">' + d.dest + '<br>' + tag + '</div>' +
+                '<div class="eta">' + eta.txt + '</div></div>';
+            }).join("");
+            if (!cards) cards = '<div class="empty">Aucun passage à venir (service terminé ?)</div>';
+            return '<section class="stop"><h2>' + b.stop.name + '</h2>' +
+                   '<div class="deps">' + cards + '</div></section>';
+          }).join("");
+          var s = document.getElementById("status");
+          s.textContent = okCount === STOPS.length
+            ? "Données TAG à jour"
+            : "Mise à jour partielle (" + okCount + "/" + STOPS.length + " arrêts)";
+        }).catch(function () {
+          document.getElementById("status").textContent = "Erreur réseau — nouvelle tentative…";
+        });
+      }
+
+      clockTick();
+      render();
+      setInterval(clockTick, 1000);
+      setInterval(render, REFRESH_MS);
+    </script>
+  </body>
+</html>
