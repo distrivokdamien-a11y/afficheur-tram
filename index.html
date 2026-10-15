@@ -1,271 +1,128 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000">
-  <title>Affichage lignes A &amp; B — TAG Grenoble</title>
-  <style>
-    :root {
-      --fond: #000;
-      --texte: #fff;
-      --ligne-a: #00a2ff;
-      --ligne-b: #00d4aa;
-      --texte-secondaire: #b8c2cc;
-      --separateur: #30343a;
-      --police: "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--fond);
-      color: var(--texte);
-      font-family: var(--police);
-      min-height: 100vh;
-      padding: clamp(14px, 3vw, 40px);
-      display: flex;
-      flex-direction: column;
-      gap: clamp(24px, 3vh, 34px);
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      border-bottom: 1px solid var(--separateur);
-      padding-bottom: 14px;
-    }
-    h1 { font-size: clamp(1.2rem, 3vw, 1.8rem); }
-    .infos { text-align: right; color: var(--texte-secondaire); }
-    #clock { font-size: clamp(1.2rem, 3vw, 1.7rem); font-variant-numeric: tabular-nums; }
-    #status { font-size: .8rem; margin-top: 4px; }
-    .ligne { width: 100%; max-width: 1100px; margin-inline: auto; }
-    /* Espace explicite sous la séparation pour dégager la pastille B. */
-    .ligne--a { padding-bottom: 22px; }
-    .ligne--b { margin-top: 0; }
-    .ligne__entete {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding-bottom: 12px;
-    }
-    .pastille {
-      width: 50px; height: 50px; min-width: 50px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 28px; font-weight: 700;
-    }
-    .ligne--a .pastille { background: var(--ligne-a); }
-    .ligne--b .pastille { background: var(--ligne-b); }
-    .ligne__destinations {
-      display: grid;
-      grid-template-columns: 28% 36% 36%;
-      gap: 0;
-      width: 100%;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      font-weight: 600;
-    }
-    .ligne__destinations span { min-width: 0; }
-    .ligne__destinations span:first-child { grid-column: 2; }
-    .ligne__destinations span:last-child { grid-column: 3; }
-    .tableau { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: clamp(.9rem, 1.8vw, 1.125rem); }
-    .tableau th, .tableau td { padding: 14px 16px; text-align: left; }
-    .tableau th:first-child, .tableau td:first-child { padding-left: 66px; }
-    .tableau thead th { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 600; padding-bottom: 18px; }
-    .tableau thead th:first-child { width: 28%; }
-    .tableau thead th:not(:first-child) { width: 36%; }
-    .tableau tbody th { font-weight: 400; color: var(--texte-secondaire); padding-top: 22px; overflow-wrap: anywhere; }
-    .tableau tbody td { padding-top: 22px; font-variant-numeric: tabular-nums; }
-    .temps { color: var(--texte); font-weight: 600; }
-    .minutes { font-size: 1.35em; }
-    .unite { font-size: .75em; color: var(--texte-secondaire); margin-left: 4px; }
-    .detail { display: block; color: var(--texte-secondaire); font-size: .72rem; font-weight: 400; margin-top: 4px; }
-    .vide { color: #858b93; font-size: .9em; font-weight: 400; }
-    .ligne--a .temps .minutes { color: var(--ligne-a); }
-    .ligne--b .temps .minutes { color: var(--ligne-b); }
-    .ligne__separateur { border: 0; border-top: 1px solid var(--separateur); margin-top: 18px; }
-    @media (max-width: 600px) {
-      body { padding: 14px 12px; gap: 16px; }
-      .ligne--a { padding-bottom: 18px; }
-      .ligne--b { margin-top: 0; }
-      .pastille { width: 40px; height: 40px; min-width: 40px; font-size: 22px; }
-      .ligne__entete { gap: 12px; }
-      .ligne__destinations { gap: 0; font-size: 1rem; grid-template-columns: 31% 34.5% 34.5%; }
-      .tableau th, .tableau td { padding: 12px 6px; }
-      .tableau th:first-child, .tableau td:first-child { padding-left: 4px; }
-      .tableau thead th:first-child { width: 31%; }
-      .tableau thead th:not(:first-child) { width: 34.5%; }
-      .tableau tbody th { font-size: .85rem; }
-      .detail { font-size: .65rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Prochains passages — TAG Grenoble</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;min-height:100%;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center}
+  #board{width:min(100vw,160vh);height:auto;display:block;background:#000}
+  .label{fill:#fff;font-family:Arial,Helvetica,sans-serif}
+  .eta{fill:#fff;font-family:Arial,Helvetica,sans-serif;font-size:27px}
+  .eta2{font-size:23px}
+  .stopname{font-size:19px}
+  #status{font-size:12.7px;fill:#fff}
+  #clock{font-size:28.7px;fill:#fff;font-variant-numeric:tabular-nums}
+  .trackA{fill:#0078bb}.trackB{fill:#009833}
+  .station{fill:#fff;stroke:#000;stroke-width:1}
+  .arrow{fill:#fff}
+  @media(max-aspect-ratio: 4/3){#board{width:100vw} .stopname{font-size:22px}.eta{font-size:30px}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Prochains passages</h1>
-    <div class="infos">
-      <div id="clock">--:--</div>
-      <div id="status" role="status" aria-live="polite">Chargement des données TAG…</div>
-    </div>
-  </header>
-
-  <main id="app" aria-live="polite"></main>
-
-  <script>
-    // Codes de quais utilisés par l'afficheur d'origine.
-    var STOPS = [
-      { name: "Palais de Justice – Gare", codes: ["SEM:2076", "SEM:0802", "SEM:2077"] },
-      { name: "Saint-Bruno", codes: ["SEM:2030", "SEM:2031"] },
-      { name: "Berriat – Le Magasin", codes: ["SEM:0923", "SEM:0924", "SEM:2032", "SEM:2033"] }
-    ];
-    var LINE_LAYOUT = [
-      { line: "A", css: "a", stops: ["Saint-Bruno", "Berriat – Le Magasin"] },
-      { line: "B", css: "b", stops: ["Palais de Justice – Gare", "Saint-Bruno"] }
-    ];
-    var NEXT_COUNT = 3;
-    var REFRESH_MS = 20000;
-    var cachedDepartures = {};
-
-    function clockTick() {
-      var d = new Date();
-      document.getElementById("clock").textContent =
-        ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-    }
-
-    function fetchStop(code) {
-      return fetch("https://data.mobilites-m.fr/api/routers/default/index/stops/" + code + "/stoptimes")
-        .then(function (r) {
-          if (!r.ok) throw new Error("HTTP " + r.status);
-          return r.json();
-        });
-    }
-
-    function collectDepartures(stop) {
-      var promises = stop.codes.map(fetchStop);
-      return Promise.all(promises.map(function (p) {
-        return p.catch(function () { return []; });
-      })).then(function (results) {
-        var seen = {};
-        var deps = [];
-        results.forEach(function (groups) {
-          (groups || []).forEach(function (g) {
-            var pattern = g.pattern || {};
-            // L'API fournit la ligne dans l'identifiant, par exemple SEM:B:0:...
-            var line = (pattern.id || "").split(":")[1];
-            if (line !== "A" && line !== "B") return;
-
-            (g.times || []).forEach(function (t) {
-              var seconds = t.serviceDay + (
-                t.realtimeDeparture != null ? t.realtimeDeparture : t.scheduledDeparture
-              );
-              var departureMs = seconds * 1000;
-              if (!Number.isFinite(departureMs) || departureMs < Date.now() - 30000) return;
-
-              var key = t.tripId || (line + "|" + departureMs + "|" + (pattern.lastStopName || pattern.desc || ""));
-              if (seen[key]) return;
-              seen[key] = true;
-
-              deps.push({
-                line: line,
-                dest: pattern.lastStopName || pattern.headsign || pattern.desc || pattern.shortDesc || "Destination inconnue",
-                ms: departureMs,
-                realtime: !!t.realtime,
-                delay: t.departureDelay
-              });
-            });
-          });
-        });
-        deps.sort(function (a, b) { return a.ms - b.ms; });
-        return deps;
+<svg id="board" viewBox="0 0 1280 800" role="img" aria-label="Prochains passages des trams A et B">
+<rect width="1280" height="800" fill="#000"/>
+<text class="label" x="210" y="50" font-size="28.7">Prochains passages</text>
+<text id="clock" x="1080" y="31" text-anchor="end">--:--</text>
+<text id="status" x="1080" y="52" text-anchor="end">Chargement des données TAG…</text>
+<rect x="0" y="66" width="1280" height="1.6" fill="#d8d8d8"/>
+<!-- Ligne B : barre et arrêts, disposition calquée sur la maquette -->
+<g id="lineB">
+ <rect class="trackB" x="281.449" y="235.586" width="717.1" height="15.936" rx="6"/>
+ <circle class="station" cx="520.482" cy="243.283" r="15.936"/>
+ <circle class="station" cx="759.515" cy="243.283" r="15.936"/>
+ <text class="label stopname" x="252.749" y="220.511" text-anchor="end">Palais de Justice – Gare</text>
+ <text class="label stopname" x="925.194" y="220.511">Saint-Bruno</text>
+ <text id="b-left-1" class="eta" x="485" y="290" text-anchor="middle">—</text>
+ <text id="b-left-2" class="eta eta2" x="485" y="327" text-anchor="middle">—</text>
+ <text id="b-right-1" class="eta" x="795" y="290" text-anchor="middle">—</text>
+ <text id="b-right-2" class="eta eta2" x="795" y="327" text-anchor="middle">—</text>
+</g>
+<!-- Ligne A -->
+<g id="lineA">
+ <rect class="trackA" x="281.449" y="621.165" width="717.1" height="15.936" rx="6"/>
+ <circle class="station" cx="520.498" cy="628.856" r="15.936"/>
+ <circle class="station" cx="759.531" cy="628.856" r="15.936"/>
+ <text class="label stopname" x="209.5" y="606.146">Berriat – Le Magasin</text>
+ <text class="label stopname" x="974.584" y="606.146">Saint-Bruno</text>
+ <text id="a-left-1" class="eta" x="485" y="675" text-anchor="middle">—</text>
+ <text id="a-left-2" class="eta eta2" x="485" y="712" text-anchor="middle">—</text>
+ <text id="a-right-1" class="eta" x="795" y="675" text-anchor="middle">—</text>
+ <text id="a-right-2" class="eta eta2" x="795" y="712" text-anchor="middle">—</text>
+</g>
+</svg>
+<script>
+(function(){
+  const COLORS={A:"#0078bb",B:"#009833"};
+  const REFRESH_MS=20000, COUNT=2;
+  const STOPS={
+    "b-left":{codes:["SEM:2076","SEM:0802","SEM:2077"],line:"B"},
+    "b-right":{codes:["SEM:2030","SEM:2031"],line:"B"},
+    "a-left":{codes:["SEM:0923","SEM:0924","SEM:2032","SEM:2033"],line:"A"},
+    "a-right":{codes:["SEM:2030","SEM:2031"],line:"A"}
+  };
+  function tick(){
+    const d=new Date();
+    document.getElementById("clock").textContent=
+      String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  }
+  function getLine(g){
+    const p=g && g.pattern;
+    if(!p)return "";
+    if(p.shortName==="A"||p.shortName==="B")return p.shortName;
+    const id=String(p.id||"").split(":");
+    return id.length>1 && (id[1]==="A"||id[1]==="B") ? id[1] : "";
+  }
+  async function fetchStop(code){
+    const r=await fetch("https://data.mobilites-m.fr/api/routers/default/index/stops/"+encodeURIComponent(code)+"/stoptimes");
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    return r.json();
+  }
+  async function departures(stopKey, cfg){
+    const all=await Promise.all(cfg.codes.map(c=>fetchStop(c).catch(()=>[])));
+    const seen=new Set(), deps=[];
+    all.flat().forEach(g=>{
+      if(getLine(g)!==cfg.line)return;
+      (g.times||[]).forEach(t=>{
+        const sec=t.serviceDay+(t.realtimeDeparture ?? t.scheduledDeparture);
+        const ms=sec*1000;
+        if(!Number.isFinite(ms)||ms<Date.now()-30000)return;
+        const key=t.tripId||String(ms)+":"+(g.pattern&&g.pattern.id);
+        if(seen.has(key))return;
+        seen.add(key);
+        deps.push({ms,realtime:!!t.realtime});
       });
-    }
-
-    function getStop(name) {
-      return STOPS.find(function (s) { return s.name === name; });
-    }
-
-    function etaText(departure) {
-      var mins = Math.max(0, Math.round((departure.ms - Date.now()) / 60000));
-      if (mins <= 0) {
-        return '<span class="minutes">À l’approche</span>' +
-          (departure.realtime ? '<span class="detail">Temps réel</span>' : '<span class="detail">Horaire théorique</span>');
+    });
+    return deps.sort((a,b)=>a.ms-b.ms).slice(0,COUNT);
+  }
+  function etaText(dep){
+    if(!dep)return "Aucun passage";
+    const min=Math.max(0,Math.round((dep.ms-Date.now())/60000));
+    return min<=0?"À l’approche":min+" min"+(dep.realtime?"":" *");
+  }
+  async function refresh(){
+    let successes=0;
+    const keys=Object.keys(STOPS);
+    await Promise.all(keys.map(async key=>{
+      const cfg=STOPS[key];
+      try{
+        const deps=await departures(key,cfg); successes++;
+        for(let i=0;i<COUNT;i++){
+          const el=document.getElementById(key+"-"+(i+1));
+          if(el)el.textContent=deps[i]?etaText(deps[i]):(i===0?"Aucun passage":"");
+        }
+      }catch(e){
+        document.getElementById(key+"-1").textContent="Indisponible";
+        document.getElementById(key+"-2").textContent="";
       }
-      return '<span class="minutes">' + mins + '</span><span class="unite">min</span>' +
-        '<span class="detail">' + (departure.realtime ? 'Temps réel' : 'Horaire théorique') + '</span>';
-    }
-
-    function destinationGroups(deps, line) {
-      var names = [];
-      deps.filter(function (d) { return d.line === line; }).forEach(function (d) {
-        if (names.indexOf(d.dest) === -1) names.push(d.dest);
-      });
-      return names.slice(0, 2);
-    }
-
-    function nextFor(stopName, line, destination) {
-      var deps = cachedDepartures[stopName] || [];
-      return deps.filter(function (d) {
-        return d.line === line && d.dest === destination;
-      }).slice(0, NEXT_COUNT);
-    }
-
-    function renderLine(layout) {
-      var allForLine = [];
-      layout.stops.forEach(function (stopName) {
-        allForLine = allForLine.concat((cachedDepartures[stopName] || []).filter(function (d) {
-          return d.line === layout.line;
-        }));
-      });
-      var destinations = destinationGroups(allForLine, layout.line);
-      while (destinations.length < 2) destinations.push(null);
-
-      var rows = destinations.map(function (dest, i) {
-        var cells = layout.stops.map(function (stopName) {
-          if (!dest) return '<td class="temps"><span class="vide">—</span></td>';
-          var next = nextFor(stopName, layout.line, dest)[0];
-          return '<td class="temps">' + (next ? etaText(next) : '<span class="vide">Aucun passage</span>') + '</td>';
-        }).join("");
-        return '<tr><th scope="row">' + (dest || "Destination") + '</th>' + cells + '</tr>';
-      }).join("");
-
-      return '<section class="ligne ligne--' + layout.css + '" aria-label="Ligne ' + layout.line + '">' +
-        '<div class="ligne__entete"><div class="pastille" aria-hidden="true">' + layout.line + '</div>' +
-        '<div class="ligne__destinations" role="presentation">' +
-          '<span>' + layout.stops[0] + '</span><span>' + layout.stops[1] + '</span>' +
-        '</div></div>' +
-        '<table class="tableau"><thead><tr><th scope="col"></th>' +
-        '<th scope="col"></th><th scope="col"></th>' +
-        '</tr></thead><tbody>' + rows + '</tbody></table>' +
-        '<hr class="ligne__separateur"></section>';
-    }
-
-    function render() {
-      var status = document.getElementById("status");
-      status.textContent = "Actualisation…";
-      Promise.all(STOPS.map(function (stop) {
-        return collectDepartures(stop).then(function (deps) {
-          return { name: stop.name, deps: deps };
-        });
-      })).then(function (results) {
-        cachedDepartures = {};
-        var activeCount = 0;
-        results.forEach(function (r) {
-          cachedDepartures[r.name] = r.deps;
-          if (r.deps.length) activeCount++;
-        });
-        document.getElementById("app").innerHTML = LINE_LAYOUT.map(renderLine).join("");
-        status.textContent = activeCount === STOPS.length
-          ? "Données TAG à jour"
-          : "Données reçues pour " + activeCount + "/" + STOPS.length + " arrêts";
-      }).catch(function (err) {
-        status.textContent = "Erreur réseau — nouvelle tentative…";
-        console.error("Erreur de mise à jour de l’afficheur TAG :", err);
-      });
-    }
-
-    clockTick();
-    render();
-    setInterval(clockTick, 1000);
-    setInterval(render, REFRESH_MS);
-  </script>
+    }));
+    document.getElementById("status").textContent=successes===keys.length?"Données TAG à jour":"Données TAG partiellement disponibles";
+  }
+  tick();refresh();setInterval(tick,1000);setInterval(refresh,REFRESH_MS);
+})();
+</script>
 </body>
 </html>
