@@ -1,128 +1,178 @@
 <!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#000000">
-<title>Prochains passages — TAG Grenoble</title>
-<style>
-  *{box-sizing:border-box}
-  html,body{margin:0;width:100%;min-height:100%;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}
-  body{min-height:100vh;display:flex;align-items:center;justify-content:center}
-  #board{width:min(100vw,160vh);height:auto;display:block;background:#000}
-  .label{fill:#fff;font-family:Arial,Helvetica,sans-serif}
-  .eta{fill:#fff;font-family:Arial,Helvetica,sans-serif;font-size:27px}
-  .eta2{font-size:23px}
-  .stopname{font-size:19px}
-  #status{font-size:12.7px;fill:#fff}
-  #clock{font-size:28.7px;fill:#fff;font-variant-numeric:tabular-nums}
-  .trackA{fill:#0078bb}.trackB{fill:#009833}
-  .station{fill:#fff;stroke:#000;stroke-width:1}
-  .arrow{fill:#fff}
-  @media(max-aspect-ratio: 4/3){#board{width:100vw} .stopname{font-size:22px}.eta{font-size:30px}}
-</style>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Prochains passages TAG</title>
+ <style>html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden}svg{display:block;width:100vw;height:100vh;background:#000;font-family:Arial,sans-serif}</style>
+
 </head>
-<body>
-<svg id="board" viewBox="0 0 1280 800" role="img" aria-label="Prochains passages des trams A et B">
-<rect width="1280" height="800" fill="#000"/>
-<text class="label" x="210" y="50" font-size="28.7">Prochains passages</text>
-<text id="clock" x="1080" y="31" text-anchor="end">--:--</text>
-<text id="status" x="1080" y="52" text-anchor="end">Chargement des données TAG…</text>
-<rect x="0" y="66" width="1280" height="1.6" fill="#d8d8d8"/>
-<!-- Ligne B : barre et arrêts, disposition calquée sur la maquette -->
-<g id="lineB">
- <rect class="trackB" x="281.449" y="235.586" width="717.1" height="15.936" rx="6"/>
- <circle class="station" cx="520.482" cy="243.283" r="15.936"/>
- <circle class="station" cx="759.515" cy="243.283" r="15.936"/>
- <text class="label stopname" x="252.749" y="220.511" text-anchor="end">Palais de Justice – Gare</text>
- <text class="label stopname" x="925.194" y="220.511">Saint-Bruno</text>
- <text id="b-left-1" class="eta" x="485" y="290" text-anchor="middle">—</text>
- <text id="b-left-2" class="eta eta2" x="485" y="327" text-anchor="middle">—</text>
- <text id="b-right-1" class="eta" x="795" y="290" text-anchor="middle">—</text>
- <text id="b-right-2" class="eta eta2" x="795" y="327" text-anchor="middle">—</text>
-</g>
-<!-- Ligne A -->
-<g id="lineA">
- <rect class="trackA" x="281.449" y="621.165" width="717.1" height="15.936" rx="6"/>
- <circle class="station" cx="520.498" cy="628.856" r="15.936"/>
- <circle class="station" cx="759.531" cy="628.856" r="15.936"/>
- <text class="label stopname" x="209.5" y="606.146">Berriat – Le Magasin</text>
- <text class="label stopname" x="974.584" y="606.146">Saint-Bruno</text>
- <text id="a-left-1" class="eta" x="485" y="675" text-anchor="middle">—</text>
- <text id="a-left-2" class="eta eta2" x="485" y="712" text-anchor="middle">—</text>
- <text id="a-right-1" class="eta" x="795" y="675" text-anchor="middle">—</text>
- <text id="a-right-2" class="eta eta2" x="795" y="712" text-anchor="middle">—</text>
-</g>
-</svg>
+ <body>
+<svg width="1280px" height="800px" viewBox="0 0 1280 800" xmlns="http://www.w3.org/2000/svg">
+ <rect width="1280" height="800" fill="#000000" style="stroke-width:1" id="object-0"></rect>
+ <rect x="281.449" y="235.586" width="717.1" height="15.936" style="stroke: rgb(0, 0, 0); fill: rgb(0, 152, 51); stroke-width: 1;" rx="6" ry="6" id="object-1"></rect>
+ <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 1;" cx="520.482" cy="243.283" rx="15.936" ry="15.936" id="object-2"></ellipse>
+ <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 1;" cx="759.515" cy="243.283" rx="15.936" ry="15.936" id="object-3"></ellipse>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19.1px; white-space: pre; stroke-width: 1;" x="252.749" y="220.511" id="stop-b-left">Oxford</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19.1px; white-space: pre; stroke-width: 1;" x="925.194" y="220.511" id="stop-b-right">Plaine des sports</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 207.771106, -84.097787)" id="object-6"><tspan id="bLeftForward1" style="font-size: 14px;" x="174.231" y="163.994">6 min</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="bLeftForward2">2 min</tspan>
+ </text><text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 446.804908, -84.097787)" id="object-7">
+   <tspan id="bRightForward1" style="font-size: 14px;" x="174.231" y="163.994">8 min</tspan>
+   <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="bRightForward2">4 min</tspan>
+ </text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 207.771686, 48.244824)" id="object-8">
+  <tspan id="bLeftBack1" x="174.231" y="163.994">A l'approche</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="bLeftBack2" style="font-size: 14px;">10 min</tspan>
+ </text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 446.804908, 48.244824)" id="object-9">
+  <tspan id="bRightBack1" x="174.231" y="163.994">8 min</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="bRightBack2" style="font-size: 14px;">20 min</tspan>
+ </text>
+ <g transform="matrix(1.593555, 0, 0, 1.593555, 197.003711, 11.615766)" id="object-10" style="">
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="fill: rgb(255, 255, 255); transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(0, 1, -1, 0, 86.997658, -28.524955)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(203, 203, 203); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 107.011589, -28.524993)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(152, 152, 152); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 127.011589, -28.524962)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(100, 100, 100); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 147.01159, -28.524962)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(48, 48, 48); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 167.01159, -28.524993)"></path>
+ </g>
+ <g transform="matrix(1.593555, 0, 0, 1.593555, 216.283954, 51.615765)" id="object-11" style="">
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="fill: rgb(255, 255, 255); stroke-width: 1; transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 154.912694, -221.652173)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(203, 203, 203); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 134.898775, -221.652143)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(152, 152, 152); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 114.898783, -221.652204)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(100, 100, 100); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 94.898775, -221.652143)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(48, 48, 48); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 74.898773, -221.652112)"></path>
+ </g>
+ <rect x="281.449" y="621.165" width="717.1" height="15.936" style="stroke-width: 1; fill: rgb(0, 120, 187);" rx="6" ry="6" id="object-12"></rect>
+ <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 1;" cx="520.498" cy="628.856" rx="15.936" ry="15.936" id="object-13"></ellipse>
+ <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 1;" cx="759.531" cy="628.856" rx="15.936" ry="15.936" id="object-14"></ellipse>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19.1px; white-space: pre; stroke-width: 1;" x="209.5" y="606.146" id="stop-a-left">Fontaine la Poya</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19.1px; white-space: pre; stroke-width: 1;" x="974.584" y="606.146" id="stop-a-right">Etoile</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 207.780933, 301.477391)" id="object-17">
+  <tspan id="aLeftForward1" style="font-size: 14px;" x="174.231" y="163.994">6 min</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="aLeftForward2">2 min</tspan>
+ </text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 446.814734, 301.477391)" id="object-18">
+  <tspan id="aRightForward1" style="font-size: 14px;" x="174.231" y="163.994">8 min</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="aRightForward2">4 min</tspan>
+ </text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 207.781512, 433.820075)" id="object-19">
+  <tspan id="aLeftBack1" x="174.231" y="163.994">A l'approche</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="aLeftBack2" style="font-size: 14px;">10 min</tspan>
+ </text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 18px; white-space: pre;" transform="matrix(1.593555, 0, 0, 1.593555, 446.814734, 433.820075)" id="object-20">
+  <tspan id="aRightBack1" x="174.231" y="163.994">8 min</tspan>
+  <tspan x="174.231" dy="1em">​</tspan>
+  <tspan id="aRightBack2" style="font-size: 14px;">20 min</tspan>
+ </text>
+ <g transform="matrix(1.593555, 0, 0, 1.593555, 197.013537, 397.190985)" id="object-21" style="">
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="fill: rgb(255, 255, 255); transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(0, 1, -1, 0, 86.997658, -28.524955)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(203, 203, 203); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 107.011589, -28.524993)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(152, 152, 152); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 127.011589, -28.524962)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(100, 100, 100); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 147.01159, -28.524962)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(48, 48, 48); transform-origin: 150.986px 262.393px;" transform="matrix(0, 1, -1, 0, 167.01159, -28.524993)"></path>
+ </g>
+ <g transform="matrix(1.593555, 0, 0, 1.593555, 216.293781, 437.190986)" id="object-22" style="">
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="fill: rgb(255, 255, 255); stroke-width: 1; transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 154.912694, -221.652173)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(203, 203, 203); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 134.898775, -221.652143)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(152, 152, 152); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 114.898783, -221.652204)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(100, 100, 100); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 94.898775, -221.652143)"></path>
+  <path d="M 150.986 252.393 L 160.986 272.393 L 140.986 272.393 L 150.986 252.393 Z" style="stroke-width: 1; fill: rgb(48, 48, 48); transform-origin: 150.986px 262.393px;" transform="matrix(0, -1, 1, 0, 74.898773, -221.652112)"></path>
+ </g>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28.7px; white-space: pre; stroke-width: 1;" x="209.85" y="49.522" id="object-23">Prochains passages</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28.7px; white-space: pre; stroke-width: 1;" x="986.864" y="31.069" id="clock">20h32</text>
+ <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 12.7px; white-space: pre; stroke-width: 1;" x="949.774" y="52.295" id="status">Données TAG à jour</text>
+ <rect y="66.239" width="1280" height="1.594" style="fill: rgb(216, 216, 216); stroke-width: 1;" id="object-27"></rect></svg>
+
 <script>
-(function(){
-  const COLORS={A:"#0078bb",B:"#009833"};
-  const REFRESH_MS=20000, COUNT=2;
-  const STOPS={
-    "b-left":{codes:["SEM:2076","SEM:0802","SEM:2077"],line:"B"},
-    "b-right":{codes:["SEM:2030","SEM:2031"],line:"B"},
-    "a-left":{codes:["SEM:0923","SEM:0924","SEM:2032","SEM:2033"],line:"A"},
-    "a-right":{codes:["SEM:2030","SEM:2031"],line:"A"}
+(() => {
+  "use strict";
+  const REFRESH_MS = 20000;
+  // Arrêts configurés avec les codes TAG déjà utilisés dans la version fonctionnelle.
+  // Plusieurs quais/codes sont regroupés afin de récupérer les passages disponibles.
+  const STOP_CONFIG = {
+    bLeft:  { codes:["SEM:2076","SEM:0802","SEM:2077"], line:"B" },
+    bRight: { codes:["SEM:2030","SEM:2031"], line:"B" },
+    aLeft:  { codes:["SEM:0923","SEM:0924","SEM:2032","SEM:2033"], line:"A" },
+    aRight: { codes:["SEM:2030","SEM:2031"], line:"A" }
   };
-  function tick(){
+  const $ = id => document.getElementById(id);
+  function updateClock(){
     const d=new Date();
-    document.getElementById("clock").textContent=
-      String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+    $("clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
   }
-  function getLine(g){
+  function lineOf(g){
     const p=g && g.pattern;
     if(!p)return "";
     if(p.shortName==="A"||p.shortName==="B")return p.shortName;
-    const id=String(p.id||"").split(":");
-    return id.length>1 && (id[1]==="A"||id[1]==="B") ? id[1] : "";
+    const parts=String(p.id||"").split(":");
+    return parts.length>1 && ["A","B"].includes(parts[1]) ? parts[1] : "";
   }
   async function fetchStop(code){
     const r=await fetch("https://data.mobilites-m.fr/api/routers/default/index/stops/"+encodeURIComponent(code)+"/stoptimes");
     if(!r.ok)throw new Error("HTTP "+r.status);
     return r.json();
   }
-  async function departures(stopKey, cfg){
-    const all=await Promise.all(cfg.codes.map(c=>fetchStop(c).catch(()=>[])));
-    const seen=new Set(), deps=[];
-    all.flat().forEach(g=>{
-      if(getLine(g)!==cfg.line)return;
-      (g.times||[]).forEach(t=>{
-        const sec=t.serviceDay+(t.realtimeDeparture ?? t.scheduledDeparture);
-        const ms=sec*1000;
-        if(!Number.isFinite(ms)||ms<Date.now()-30000)return;
-        const key=t.tripId||String(ms)+":"+(g.pattern&&g.pattern.id);
-        if(seen.has(key))return;
-        seen.add(key);
-        deps.push({ms,realtime:!!t.realtime});
-      });
-    });
-    return deps.sort((a,b)=>a.ms-b.ms).slice(0,COUNT);
+  function directionKey(pattern){
+    // L'API peut fournir directionId, headsign/desc ou un identifiant de pattern.
+    return String(pattern.directionId ?? pattern.desc ?? pattern.name ?? pattern.id ?? "sens-inconnu");
   }
-  function etaText(dep){
-    if(!dep)return "Aucun passage";
-    const min=Math.max(0,Math.round((dep.ms-Date.now())/60000));
-    return min<=0?"À l’approche":min+" min"+(dep.realtime?"":" *");
-  }
-  async function refresh(){
-    let successes=0;
-    const keys=Object.keys(STOPS);
-    await Promise.all(keys.map(async key=>{
-      const cfg=STOPS[key];
-      try{
-        const deps=await departures(key,cfg); successes++;
-        for(let i=0;i<COUNT;i++){
-          const el=document.getElementById(key+"-"+(i+1));
-          if(el)el.textContent=deps[i]?etaText(deps[i]):(i===0?"Aucun passage":"");
+  async function getDepartures(cfg){
+    const responses=await Promise.all(cfg.codes.map(code=>fetchStop(code).catch(()=>[])));
+    const dirs=new Map();
+    for(const groups of responses){
+      for(const g of groups.flat ? groups.flat() : groups){
+        if(lineOf(g)!==cfg.line)continue;
+        const p=g.pattern||{}, key=directionKey(p);
+        if(!dirs.has(key))dirs.set(key,{label:p.desc||p.name||"",deps:[],seen:new Set()});
+        const dir=dirs.get(key);
+        for(const t of (g.times||[])){
+          const seconds=Number(t.serviceDay||0)+Number(t.realtimeDeparture ?? t.scheduledDeparture);
+          const ms=seconds*1000;
+          if(!Number.isFinite(ms)||ms<Date.now()-30000)continue;
+          const trip=String(t.tripId||ms+":"+p.id);
+          if(dir.seen.has(trip))continue;
+          dir.seen.add(trip);
+          dir.deps.push({ms,realtime:t.realtime!==false});
         }
+      }
+    }
+    return [...dirs.values()]
+      .map(d=>({...d,deps:d.deps.sort((a,b)=>a.ms-b.ms)}))
+      .filter(d=>d.deps.length)
+      .sort((a,b)=>a.deps[0].ms-b.deps[0].ms)
+      .slice(0,2);
+  }
+  function eta(dep){
+    if(!dep)return "—";
+    const mins=Math.max(0,Math.round((dep.ms-Date.now())/60000));
+    return mins<=0?"À l'approche":mins+" min";
+  }
+  function setTime(id,dep){ if($(id))$(id).textContent=eta(dep); }
+  async function refresh(){
+    let ok=0;
+    await Promise.all(Object.entries(STOP_CONFIG).map(async ([key,cfg])=>{
+      try{
+        const dirs=await getDepartures(cfg);
+        // Les deux blocs de texte de chaque arrêt correspondent aux deux sens.
+        // Chaque sens affiche ses deux prochains passages.
+        const f=dirs[0]?.deps||[], b=dirs[1]?.deps||[];
+        setTime(key+"Forward1",f[0]); setTime(key+"Forward2",f[1]);
+        setTime(key+"Back1",b[0]); setTime(key+"Back2",b[1]);
+        ok++;
       }catch(e){
-        document.getElementById(key+"-1").textContent="Indisponible";
-        document.getElementById(key+"-2").textContent="";
+        [key+"Forward1",key+"Forward2",key+"Back1",key+"Back2"].forEach(id=>{if($(id))$(id).textContent="—";});
       }
     }));
-    document.getElementById("status").textContent=successes===keys.length?"Données TAG à jour":"Données TAG partiellement disponibles";
+    $("status").textContent=ok===4?"Données TAG à jour":"Données TAG partiellement disponibles";
   }
-  tick();refresh();setInterval(tick,1000);setInterval(refresh,REFRESH_MS);
+  updateClock(); refresh();
+  setInterval(updateClock,1000);
+  setInterval(refresh,REFRESH_MS);
 })();
 </script>
-</body>
-</html>
+</body></html>
